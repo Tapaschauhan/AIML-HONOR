@@ -3,9 +3,6 @@ from typing import Dict, Type
 
 
 
-# Task 1: Payment Method Hierarchy
-
-
 class PaymentMethod(ABC):
     @abstractmethod
     def get_details(self) -> str:
@@ -74,7 +71,6 @@ class StripeUPIPayment(PaymentMethod):
 
 
 
-# Task 2: Payment Method Factory (Abstract Factory)
 
 
 class FactoryPaymentMethod(ABC):
@@ -118,7 +114,6 @@ class Aggregator(ABC):
         total_amount = amount + (amount * self.processing_fee / 100.0)
         print(f"\nProcessing via {self.name} (Fee: {self.processing_fee}% | Total: {total_amount:.2f})...")
         
-        # Delegates object creation to respective factory
         payment_obj = self.payment_factory.get_payment_object(method_type, **kwargs)
         return payment_obj.pay(total_amount)
 
@@ -132,8 +127,6 @@ class StripeAggregator(Aggregator):
     def __init__(self):
         super().__init__(name="Stripe", processing_fee=2.9, payment_factory=StripeFactory)
 
-
-# Task 4: Aggregator Factory
 
 
 class AggregatorFactory:
@@ -157,7 +150,6 @@ class AggregatorFactory:
 
 
 
-# Task 5: CLI Client Workflow
 
 
 def prompt_non_empty(message: str) -> str:
@@ -168,9 +160,9 @@ def prompt_non_empty(message: str) -> str:
         print("Input cannot be empty. Please try again.")
 
 def main():
-    print("==========================================")
-    print("   Multi-Gateway Payment Engine Console   ")
-    print("==========================================")
+    
+    print("   ----Multi-Gateway Payment Engine Console----   ")
+ 
     
     try:
         gateway_choice = prompt_non_empty("Select Gateway (stripe / razorpay): ").lower()
@@ -198,7 +190,6 @@ def main():
         if amount <= 0:
             raise ValueError("Amount must be greater than zero.")
 
-        # Route execution dynamically
         success = aggregator.call_get_payment_object(method_choice, amount, **payment_kwargs)
         
         if success:
